@@ -1,0 +1,34 @@
+---
+title: "Genesis Lacy Exercise 5"
+format: html
+---
+1. Class of palmerpenguins dataset:
+Raw Data 
+
+2. Structure of penguins dataset: Tibble 
+
+3. Dimensions of dataset: 344 x 8
+
+4. Column names of datasets: species, island, bill length, bill depth, flipper length, body mass, sex and year
+
+5. What type of data is 'flipper_length' and 'Island'?
+Flipper Length is integer and island is a factor
+
+6. What is the name of the island for the 100th penguin?
+Dream
+
+See below for the mean, standard deviation and median: 
+
+```{r}
+library(palmerpenguins)
+
+mean(penguins$flipper_length_mm,na.rm = TRUE)
+sd(penguins$flipper_length_mm,na.rm = TRUE)
+median(penguins$body_mass_g,na.rm = TRUE)
+
+
+
+
+```
+
+
