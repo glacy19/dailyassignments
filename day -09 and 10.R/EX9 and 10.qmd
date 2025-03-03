@@ -18,7 +18,7 @@ editor: visual
 ```{r}
 airquality
 library(visdat)
-visdat(airquality)
+vis_dat(airquality)
 airquality <- na.omit(airquality)
 model <- lm(Ozone ~ Solar.R, data = airquality)
 ```
