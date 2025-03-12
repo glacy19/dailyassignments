@@ -1,0 +1,17 @@
+---
+title: "3.10 EX"
+format: html
+editor: visual
+---
+
+```{r}
+
+
+
+```
+
+\##
+
+```{r}
+
+```
