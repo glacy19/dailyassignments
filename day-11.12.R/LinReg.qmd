@@ -1,0 +1,32 @@
+---
+title: "Daily Exercise 11 and 12: Building Linear Regression Models"
+author: "Genesis Lacy"
+format: html
+execute:
+  echo: true
+editor: visual
+---
+
+Part 1: Normality Testing
+
+```{r}
+library(tidyverse)
+data("airquality")
+str(airquality)
+summary(airquality)
+
+shapiro.test(airquality$Ozone)
+shapiro.test(airquality$Solar.R)
+shapiro.test(airquality$Wind)
+shapiro.test(airquality$Temp)
+
+```
+The purpose of performing these tests is ______
+
+The null hypothesis is ____
+The alternative hypothesis is _____
+
+The p-values indicate that the data is ____ distributed. 
+
+
+
