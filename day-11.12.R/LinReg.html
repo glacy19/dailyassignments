@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Genesis Lacy">
+<meta name="author" content="Genesis Lacy, ESS 330">
 
-<title>Building Linear Regression Models</title>
+<title>Daily Exercise 11 and 12: Building Linear Regression Models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Building Linear Regression Models</h1>
+<h1 class="title">Daily Exercise 11 and 12: Building Linear Regression Models</h1>
 </div>
 
 
@@ -90,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Genesis Lacy </p>
+             <p>Genesis Lacy, ESS 330 </p>
           </div>
   </div>
     
@@ -103,7 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Daily Exercise 11 and 12</p>
 <p>Part 1: Normality Testing</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -182,8 +181,53 @@ data:  airquality$Temp
 W = 0.97617, p-value = 0.009319</code></pre>
 </div>
 </div>
-<p>The purpose of performing these tests is ______</p>
-<p>The null hypothesis is ____ The alternative hypothesis is _____</p>
+<p>The purpose of performing these tests is to see if the data we’re using has a normal distribution.</p>
+<p>Running the following code to see what our null and alternative hypotheses are:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>moments<span class="sc">::</span><span class="fu">agostino.test</span>(<span class="fu">na.omit</span>(airquality<span class="sc">$</span>Ozone))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    D'Agostino skewness test
+
+data:  na.omit(airquality$Ozone)
+skew = 1.2257, z = 4.6564, p-value = 3.219e-06
+alternative hypothesis: data have a skewness</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>moments<span class="sc">::</span><span class="fu">agostino.test</span>(<span class="fu">na.omit</span>(airquality<span class="sc">$</span>Solar.R))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    D'Agostino skewness test
+
+data:  na.omit(airquality$Solar.R)
+skew = -0.42363, z = -2.10903, p-value = 0.03494
+alternative hypothesis: data have a skewness</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>moments<span class="sc">::</span><span class="fu">agostino.test</span>(<span class="fu">na.omit</span>(airquality<span class="sc">$</span>Wind))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    D'Agostino skewness test
+
+data:  na.omit(airquality$Wind)
+skew = 0.3444, z = 1.7720, p-value = 0.07639
+alternative hypothesis: data have a skewness</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>moments<span class="sc">::</span><span class="fu">agostino.test</span>(<span class="fu">na.omit</span>(airquality<span class="sc">$</span>Temp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    D'Agostino skewness test
+
+data:  na.omit(airquality$Temp)
+skew = -0.37417, z = -1.91727, p-value = 0.0552
+alternative hypothesis: data have a skewness</code></pre>
+</div>
+</div>
+<p>Per the D’Agostino test that was just ran:</p>
+<ul>
+<li><p>Ozone has a skewness of 1.2257 and there is an alt hypothesis. The p-value indicates that</p></li>
+<li><p>Solar radiation has a skewness of -0.42363 and there is an alt hypothesis.</p></li>
+<li><p>Wind has a skewness of 0.3444 and there is an alt hypothesis but this set of our data will have the most normality because the skewness is almost equal to 0.0.</p></li>
+<li><p>Temperature has s skewness of -0.37417 and there is an alt hypothesis.</p></li>
+</ul>
 <p>The p-values indicate that the data is ____ distributed.</p>
 
 </main>

@@ -1,6 +1,6 @@
 ---
 title: "Daily Exercise 11 and 12: Building Linear Regression Models"
-author: "Genesis Lacy"
+author: "Genesis Lacy, ESS 330 "
 format: html
 execute:
   echo: true
@@ -21,12 +21,29 @@ shapiro.test(airquality$Wind)
 shapiro.test(airquality$Temp)
 
 ```
-The purpose of performing these tests is ______
 
-The null hypothesis is ____
-The alternative hypothesis is _____
+The purpose of performing these tests is to see if the data we're using has a normal distribution.
 
-The p-values indicate that the data is ____ distributed. 
+Running the following code to see what our null and alternative hypotheses are:
 
+```{r}
+moments::agostino.test(na.omit(airquality$Ozone))
 
+moments::agostino.test(na.omit(airquality$Solar.R))
 
+moments::agostino.test(na.omit(airquality$Wind))
+
+moments::agostino.test(na.omit(airquality$Temp))
+```
+
+Per the D'Agostino test that was just ran:
+
+-   Ozone has a skewness of 1.2257 and there is an alt hypothesis. The p-value indicates that
+
+-   Solar radiation has a skewness of -0.42363 and there is an alt hypothesis.
+
+-   Wind has a skewness of 0.3444 and there is an alt hypothesis but this set of our data will have the most normality because the skewness is almost equal to 0.0.
+
+-   Temperature has s skewness of -0.37417 and there is an alt hypothesis.
+
+The p-values indicate that the data is \_\_\_\_ distributed.
