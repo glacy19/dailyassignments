@@ -224,10 +224,10 @@ alternative hypothesis: data have a skewness</code></pre>
 <p>large p-value shows normal distrubtion and low value indicates there isnt normal distr</p>
 <p>Per the D’Agostino test that was just ran:</p>
 <ul>
-<li><p>Ozone has a skewness of 1.2257 and there is an alt hypothesis. The p-value indicates that ____</p></li>
-<li><p>Solar radiation has a skewness of -0.42363 and there is an alt hypothesis. The p-value indicates that ____</p></li>
-<li><p>Wind has a skewness of 0.3444 and there is an alt hypothesis but this set of our data will have the most normality because the skewness is almost equal to 0.0. The p-value indicates that ____</p></li>
-<li><p>Temperature has s skewness of -0.37417 and there is an alt hypothesis. The p-value indicates that ____</p></li>
+<li><p>Ozone has a skewness of 1.2257 and there is an alt hypothesis. The p-value indicates that it’s not normally distributed.</p></li>
+<li><p>Solar radiation has a skewness of -0.42363 and there is an alt hypothesis. The p-value indicates that it’s not normally distributed.</p></li>
+<li><p>Wind has a skewness of 0.3444 and there is an alt hypothesis but this set of our data will have the most normality because the skewness is almost equal to 0.0. The p-value indicates that there might be a more normal distribution.</p></li>
+<li><p>Temperature has s skewness of -0.37417 and there is an alt hypothesis. The p-value indicates that there is also a more normal distribution because its value is 0.0552.</p></li>
 </ul>
 <p>Part 2: Data transformation and Feature Engineering</p>
 <div class="cell">
@@ -301,9 +301,9 @@ Attaching package: 'recipes'</code></pre>
 6 -1.26   0.000743  1.40     28             1</code></pre>
 </div>
 </div>
-<p>The purpose of normalizing this data is____</p>
-<p>The function that can be used to impute missing values with the mean is _____</p>
-<p>It’s necessary to prep and bake the recipe because_____</p>
+<p>The purpose of normalizing this data is to make is easier to understand which can be difficult to do because the variables in the dataset have different units.</p>
+<p>The function that can be used to impute missing values with the mean is step_impute_mean().</p>
+<p>It’s necessary to prep and bake the recipe because prepping calculates what needs to be done to the variables and baking the recipe is what will be done to the dataset.</p>
 <p>Part 4: Building a Linear Regression Model</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>lm_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> ., <span class="at">data =</span> processed_data)</span>
@@ -334,7 +334,7 @@ Multiple R-squared:  0.5964,    Adjusted R-squared:  0.5819
 F-statistic: 41.01 on 4 and 111 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<p>The model summary output says that ______</p>
+<p>The model summary output says that we see the most significant measurements in the summer season in regards to ozone.</p>
 <p>Part 5: Model Diagnostics</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
@@ -344,8 +344,7 @@ F-statistic: 41.01 on 4 and 111 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>augmented_data <span class="ot">&lt;-</span> <span class="fu">augment</span>(lm_model)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(augmented_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(augmented_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 116  12</code></pre>
 </div>
@@ -383,6 +382,7 @@ F-statistic: 41.01 on 4 and 111 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>How strong of a model do you think this is?</p>
+<p>I think this a strong model but I think it’s also important to look at the other variables such as temperature and solar radiation in comparison to each other. This wold be able to tell us more about changes and differences in seasonality.</p>
 
 </main>
 <!-- /main column -->

@@ -40,13 +40,13 @@ large p-value shows normal distrubtion and low value indicates there isnt normal
 
 Per the D'Agostino test that was just ran:
 
--   Ozone has a skewness of 1.2257 and there is an alt hypothesis. The p-value indicates that \_\_\_\_
+-   Ozone has a skewness of 1.2257 and there is an alt hypothesis. The p-value indicates that it's not normally distributed.
 
--   Solar radiation has a skewness of -0.42363 and there is an alt hypothesis. The p-value indicates that \_\_\_\_
+-   Solar radiation has a skewness of -0.42363 and there is an alt hypothesis. The p-value indicates that it's not normally distributed.
 
--   Wind has a skewness of 0.3444 and there is an alt hypothesis but this set of our data will have the most normality because the skewness is almost equal to 0.0. The p-value indicates that \_\_\_\_
+-   Wind has a skewness of 0.3444 and there is an alt hypothesis but this set of our data will have the most normality because the skewness is almost equal to 0.0. The p-value indicates that there might be a more normal distribution.
 
--   Temperature has s skewness of -0.37417 and there is an alt hypothesis. The p-value indicates that \_\_\_\_
+-   Temperature has s skewness of -0.37417 and there is an alt hypothesis. The p-value indicates that there is also a more normal distribution because its value is 0.0552.
 
 Part 2: Data transformation and Feature Engineering
 
@@ -97,11 +97,11 @@ head(processed_data)
 
 ```
 
-The purpose of normalizing this data is\_\_\_\_
+The purpose of normalizing this data is to make is easier to understand which can be difficult to do because the variables in the dataset have different units.
 
-The function that can be used to impute missing values with the mean is \_\_\_\_\_
+The function that can be used to impute missing values with the mean is step_impute_mean().
 
-It's necessary to prep and bake the recipe because\_\_\_\_\_
+It's necessary to prep and bake the recipe because prepping calculates what needs to be done to the variables and baking the recipe is what will be done to the dataset.
 
 Part 4: Building a Linear Regression Model
 
@@ -113,7 +113,7 @@ summary(lm_model)
 
 ```
 
-The model summary output says that \_\_\_\_\_\_
+The model summary output says that we see the most significant measurements in the summer season in regards to ozone.
 
 Part 5: Model Diagnostics
 
@@ -124,15 +124,12 @@ library(ggpubr)
 
 augmented_data <- augment(lm_model)
 
-
 dim(augmented_data)
 dim(processed_data) 
-
 
 hist(augmented_data$.resid, main = "Residuals Histogram", xlab = "Residuals")
 qqnorm(augmented_data$.resid)
 qqline(augmented_data$.resid, col = "red")
-
 
 ggscatter(augmented_data, x = "Ozone", y = ".fitted",
           add = "reg.line", conf.int = TRUE,
@@ -144,3 +141,5 @@ ggscatter(augmented_data, x = "Ozone", y = ".fitted",
 ```
 
 How strong of a model do you think this is?
+
+I think this a strong model but I think it's also important to look at the other variables such as temperature and solar radiation in comparison to each other. This wold be able to tell us more about changes and differences in seasonality.
