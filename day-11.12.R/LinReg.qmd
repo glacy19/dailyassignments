@@ -36,14 +36,111 @@ moments::agostino.test(na.omit(airquality$Wind))
 moments::agostino.test(na.omit(airquality$Temp))
 ```
 
+large p-value shows normal distrubtion and low value indicates there isnt normal distr
+
 Per the D'Agostino test that was just ran:
 
--   Ozone has a skewness of 1.2257 and there is an alt hypothesis. The p-value indicates that
+-   Ozone has a skewness of 1.2257 and there is an alt hypothesis. The p-value indicates that \_\_\_\_
 
--   Solar radiation has a skewness of -0.42363 and there is an alt hypothesis.
+-   Solar radiation has a skewness of -0.42363 and there is an alt hypothesis. The p-value indicates that \_\_\_\_
 
--   Wind has a skewness of 0.3444 and there is an alt hypothesis but this set of our data will have the most normality because the skewness is almost equal to 0.0.
+-   Wind has a skewness of 0.3444 and there is an alt hypothesis but this set of our data will have the most normality because the skewness is almost equal to 0.0. The p-value indicates that \_\_\_\_
 
--   Temperature has s skewness of -0.37417 and there is an alt hypothesis.
+-   Temperature has s skewness of -0.37417 and there is an alt hypothesis. The p-value indicates that \_\_\_\_
 
-The p-values indicate that the data is \_\_\_\_ distributed.
+Part 2: Data transformation and Feature Engineering
+
+```{r}
+## creating a new column with case_when translating the months in 4 seasons
+
+airquality <- airquality%>%
+  mutate(Season = case_when(
+    Month %in% c(11, 12, 1) ~ "Winter",
+    Month %in% c(2, 3, 4) ~ "Spring", 
+    Month %in% c(5, 6, 7) ~ "Summer",
+    Month %in% c(8, 9, 10) ~ "Fall"
+  ))
+
+table(airquality$Season)
+```
+
+We have 92 observations from summer and 61 from fall and then we have zero observations for both winter and summer.
+
+Part 3: Data processing
+
+```{r}
+## making a recipe with the variables
+## prep and bake to generate a processed dataset
+
+airquality <- airquality%>%
+  mutate(Season = case_when(
+    Month %in% c(11, 12, 1) ~ "Winter",
+    Month %in% c(2, 3, 4) ~ "Spring", 
+    Month %in% c(5, 6, 7) ~ "Summer",
+    Month %in% c(8, 9, 10) ~ "Fall"
+  )) %>%
+mutate(Season = factor(Season))
+
+library(recipes)
+
+recipe_airquality <- recipe(Ozone ~ Temp + Solar.R + Wind + Season, data = airquality) %>%
+  step_impute_mean(Temp, Solar.R, Wind) %>%
+  step_normalize(Temp, Solar.R,Wind) %>%
+  step_dummy(Season)
+
+
+processed_data <- recipe_airquality %>%
+  prep() %>%
+  bake(new_data = NULL)
+
+head(processed_data)
+
+```
+
+The purpose of normalizing this data is\_\_\_\_
+
+The function that can be used to impute missing values with the mean is \_\_\_\_\_
+
+It's necessary to prep and bake the recipe because\_\_\_\_\_
+
+Part 4: Building a Linear Regression Model
+
+```{r}
+
+lm_model <- lm(Ozone ~ ., data = processed_data)
+
+summary(lm_model)
+
+```
+
+The model summary output says that \_\_\_\_\_\_
+
+Part 5: Model Diagnostics
+
+```{r}
+
+library(broom)
+library(ggpubr)
+
+augmented_data <- augment(lm_model)
+
+
+dim(augmented_data)
+dim(processed_data) 
+
+
+hist(augmented_data$.resid, main = "Residuals Histogram", xlab = "Residuals")
+qqnorm(augmented_data$.resid)
+qqline(augmented_data$.resid, col = "red")
+
+
+ggscatter(augmented_data, x = "Ozone", y = ".fitted",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          ellipse = TRUE)
+
+
+
+```
+
+How strong of a model do you think this is?
