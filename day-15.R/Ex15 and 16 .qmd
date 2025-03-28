@@ -32,6 +32,7 @@ Below is the code for the model setting and workflow for Assignment 16:
 # defining multinominal logistic regression model, there are 3 species types
 
 multinom_model <- multinom_reg() %>%
+  set_engine("glmnet")
   
 
 
