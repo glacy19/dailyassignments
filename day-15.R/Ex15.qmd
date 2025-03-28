@@ -1,26 +1,40 @@
 ---
-title: "Ex 15"
+title: " Daily Assignment 15 and 16"
+author: "Genesis Lacy"
+subtitle: "ESS 330 Quantitative Reasoning"
 format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Below is the original code from Assignment 15:
 
 ```{r}
-1 + 1
+library(tidymodels)
+library(palmerpenguins)
+library(ranger)
+
+set.seed(123)
+
+(penguins_split <- initial_split(drop_na(penguins), prop = 0.7, strata = species))
+#> <Training/Testing/Total>
+#> <265/68/333>
+penguins_train  <- training(penguins_split)
+penguins_test   <- testing(penguins_split)
+
+penguin_folds <- vfold_cv(penguins_train, v = 10)
+
+print(penguin_folds)
 ```
 
-You can add options to executable code like this
+Below is the code for the model setting and workflow for Assignment 16:
 
 ```{r}
-#| echo: false
-2 * 2
-```
+# defining multinominal logistic regression model, there are 3 species types
 
-The `echo: false` option disables the printing of code (only output is displayed).
+multinom_model <- multinom_reg() %>%
+  
+
+
+
+
+```

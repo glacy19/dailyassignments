@@ -1,5 +1,6 @@
 library(tidymodels)
 library(palmerpenguins)
+library(ranger)
 
 set.seed(123)
 
