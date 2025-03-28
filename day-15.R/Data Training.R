@@ -12,5 +12,5 @@ penguins_test   <- testing(penguins_split)
 
 penguin_folds <- vfold_cv(penguins_train, v = 10)
 
-penguins_folds
+print(penguin_folds)
 
