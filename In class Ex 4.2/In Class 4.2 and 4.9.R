@@ -45,8 +45,7 @@ skimr::skim(state_data)
 # ML applications
 
 set.seed(123)
-split <- inital_split(state_data, prop =.8, strata = season)
-
+split <- inital_split(state_data, prop =.8, strata = season) # 80/20 split on the data
 training <-training(split)
 testsing <- testing(split)
 

@@ -14,10 +14,10 @@ census_data <- readr::read_csv('https://raw.githubusercontent.com/mikejohnson51/
 census <- census_data |>
   filter(COUNTY == "000") |>
   mutate(fips = STATE) |>
-  select(fips, POPESTIMATE2021, DEATHS2021, BIRTHS2021)
+  select(fips, contains ("2021"))
 
 state_data <- data |>
-  group_by(state)|>
+  group_by(fips)|>
   mutate(new_cases = cases - lag(cases),
          new_deaths = deaths - lag(deaths))|>
   ungroup() |> #explicitly ungroup the grouped data
@@ -45,9 +45,8 @@ skimr::skim(state_data)
 
 
 # ML applications;
-
 set.seed(123)
-split <- initial_split(state_data, prop =.8, strata = season)
+split <- initial_split(state_data, prop =.8, strata = season) # sets 80/20 split on the data
 train <-training(split)
 test <- testing(split)
 folds <- vfolds_cv(train, v = 10)
