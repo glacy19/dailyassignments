@@ -38,7 +38,7 @@ state_data <- data |>
   distinct(state, y, season, .keep_all = TRUE) |>  # Keep only distinct rows by state, year, season
   ungroup() |> 
   select(state, contains('season'), y, POPESTIMATE2021, BIRTHS2021, DEATHS2021) |>  # Select relevant columns
-  drop_na(season) |>  # Remove rows with missing values
+  drop_na(season, contains("2021")) |>  # Remove rows with missing values
   mutate(logC = log(season_cases +1))  # Log-transform case numbers for modeling
 
 skimr::skim(state_data)
@@ -53,7 +53,7 @@ folds <- vfold_cv(train, v = 10)
 
 
 # general note: do NOT touch your outcome variable when making a recipe
-rec <- recipe(logC ~.,date = train) |>
+rec <- recipe(logC ~.,data = train) |>
   step_rm(state, season_cases) |>
   step_dummy(all_nominal()) |>
   step_scale(all_numeric_predictors()) |>
@@ -86,7 +86,7 @@ wf = workflow_set(list(rec), list(lm_model,
                                   rf_model2,
                                   b_model,
                                   nn_model))|>
-  workflow_map(resample = folds)
+  workflow_map(resamples = folds)
 
 ## can tell us what model works best - can compare with rsq values
 autoplot(wf)
