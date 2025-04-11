@@ -13,11 +13,11 @@ census_data <- readr::read_csv('https://raw.githubusercontent.com/mikejohnson51/
 
 census <- census_data |>
   filter(COUNTY == "000") |>
-  mutate(fips = STATE) |>
+  mutate(fips = as.character(STATE)) |>
   select(fips, contains ("2021"))
 
 state_data <- data |>
-  group_by(fips)|>
+  group_by(state)|>
   mutate(new_cases = cases - lag(cases),
          new_deaths = deaths - lag(deaths))|>
   ungroup() |> #explicitly ungroup the grouped data
@@ -38,7 +38,7 @@ state_data <- data |>
   distinct(state, y, season, .keep_all = TRUE) |>  # Keep only distinct rows by state, year, season
   ungroup() |> 
   select(state, contains('season'), y, POPESTIMATE2021, BIRTHS2021, DEATHS2021) |>  # Select relevant columns
-  drop_na() |>  # Remove rows with missing values
+  drop_na(season) |>  # Remove rows with missing values
   mutate(logC = log(season_cases +1))  # Log-transform case numbers for modeling
 
 skimr::skim(state_data)
@@ -49,7 +49,7 @@ set.seed(123)
 split <- initial_split(state_data, prop =.8, strata = season) # sets 80/20 split on the data
 train <-training(split)
 test <- testing(split)
-folds <- vfolds_cv(train, v = 10)
+folds <- vfold_cv(train, v = 10)
 
 
 # general note: do NOT touch your outcome variable when making a recipe
