@@ -1,7 +1,7 @@
 library(tidyverse)
 library(tidymodels)
 
-#ingest covid
+#add covid data
 covid_url <- 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv' 
 
 pop_url <-'https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/state/totals/NST-EST2024-ALLDATA.csv'
@@ -18,8 +18,10 @@ census <- census_data |>
 
 state_data <- data |>
   group_by(state)|>
-  mutate(new_cases = cases - lag(cases),
-         new_deaths = deaths - lag(deaths))|>
+  mutate(
+    new_cases = pmax(0, cases - lag(cases)),
+    new_deaths = pmax(0, deaths - lag(deaths))
+    )|>
   ungroup() |> #explicitly ungroup the grouped data
   left_join(census, by = "fips") |>
   mutate(y = year(date), m = month(date),
@@ -29,7 +31,6 @@ state_data <- data |>
            m %in% 6:8 ~ "Summer",
            m %in% 9:11 ~ "Fall"
          )) |>
-  
   group_by(state, y, season) |> 
   mutate(
     season_cases  = sum(new_cases, na.rm = TRUE),  # Aggregate seasonal cases
@@ -38,15 +39,15 @@ state_data <- data |>
   distinct(state, y, season, .keep_all = TRUE) |>  # Keep only distinct rows by state, year, season
   ungroup() |> 
   select(state, contains('season'), y, POPESTIMATE2021, BIRTHS2021, DEATHS2021) |>  # Select relevant columns
-  drop_na(season, contains("2021")) |>  # Remove rows with missing values
-  mutate(logC = log(season_cases +1))  # Log-transform case numbers for modeling
+  drop_na() |># Remove rows with missing values
+  mutate(logC = log(season_cases +1)) # Log-transform case numbers for modeling
 
 skimr::skim(state_data)
 
 
 # ML applications;
 set.seed(123)
-split <- initial_split(state_data, prop =.8, strata = season) # sets 80/20 split on the data
+split <- initial_split(state_data, prop =.8) # sets 80/20 split on the data
 train <-training(split)
 test <- testing(split)
 folds <- vfold_cv(train, v = 10)
